@@ -26,3 +26,5 @@ export interface RenShareForecastData {
   substitute: boolean;
   deprecated: boolean;
 }
+
+export type DashboardTimeRange = "24h" | "7d" | "30d";

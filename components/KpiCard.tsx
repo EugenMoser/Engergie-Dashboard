@@ -17,8 +17,8 @@ export default function KpiCard({
     <Card className=" border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <p className="text-3xl ">{title}</p>
       <p className="text-2xl font-bold">
-        {typeof value === "object" ? JSON.stringify(value) : value}{" "}
-        <span className="text-sm font-normal">{unit}</span>
+        {typeof value === "object" ? JSON.stringify(value) : value}
+        <span className="text-sm font-normal"> {unit}</span>
       </p>
       {trend && <p>{trend}</p>}
     </Card>

@@ -1,49 +1,51 @@
-import KpiCard from "@/components/KpiCard";
-import {
-  fetchPrice,
-  fetchPublicPower,
-  fetchRenShare,
-} from "@/lib/energy-api";
+import { Suspense } from "react";
+
+import PowerKpiCard from "@/components/kpi/PowerKpiCard";
+import PriceKpiCard from "@/components/kpi/PriceKpiCard";
+import RenShareKpiCard from "@/components/kpi/RenShareKpiCard";
+import PowerMixChart from "@/components/PowerMixChart";
+import PowerMixChartWrapper from "@/components/PowerMixChartWrapper";
 import { getDateRange } from "@/lib/utils";
+import { DashboardTimeRange } from "@/types/energy";
 
-export default async function DashboardPage(): Promise<React.JSX.Element> {
-  const { start, end } = getDateRange("24h");
+interface DashboardPageProps {
+  searchParams?: Promise<{ range?: DashboardTimeRange }>;
+}
 
-  const [powerData, priceData, renData] = await Promise.all([
-    fetchPublicPower(start, end),
-    fetchPrice(start, end),
-    fetchRenShare(),
-  ]);
-
-  // Last data point for each metric
-  const currentPower = powerData.production_types
-    .reduce(
-      (sum, type) =>
-        sum + (type.data[powerData.unix_seconds.length - 1] ?? 0),
-      0,
-    )
-    .toFixed(0); // Round to nearest whole number
-  const currentPrice = priceData.price[priceData.price.length - 1];
-  const currentRenShare = renData.ren_share[renData.ren_share.length - 1];
+export default async function DashboardPage({
+  searchParams,
+}: DashboardPageProps): Promise<React.JSX.Element> {
+  const params = (await searchParams) ?? {};
+  const { range } = params;
+  const { start, end } = getDateRange(range ? range : "24h");
 
   return (
     <main>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <KpiCard
-          title="Gesamteinspeisung"
-          value={currentPower}
-          unit="MW"
-        />
-        <KpiCard
-          title="Aktueller Strompreis"
-          value={currentPrice}
-          unit={priceData.unit}
-        />
-        <KpiCard
-          title="Erneuerbare Energieanteil"
-          value={currentRenShare}
-          unit="%"
-        />
+      <h1 className="text-4xl font-bold  m-4">Energie Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 ">
+        <Suspense fallback={<div className="m-4">Lade Daten...</div>}>
+          <PowerKpiCard
+            startDate={start}
+            endDate={end}
+          />
+        </Suspense>
+        <Suspense fallback={<div className="m-4">Lade Daten...</div>}>
+          <PriceKpiCard
+            startDate={start}
+            endDate={end}
+          />
+        </Suspense>
+        <Suspense fallback={<div className="m-4">Lade Daten...</div>}>
+          <RenShareKpiCard />
+        </Suspense>
+      </div>
+      <div className="m-8">
+        <Suspense fallback={<div className="m-4">Lade Daten...</div>}>
+          <PowerMixChartWrapper
+            startDate={start}
+            endDate={end}
+          />
+        </Suspense>
       </div>
     </main>
   );

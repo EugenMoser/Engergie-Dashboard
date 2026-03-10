@@ -7,12 +7,7 @@ export default function Home() {
   const trend = "up";
   return (
     <main className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <KpiCard
-        title={title}
-        value={value}
-        unit={unit}
-        trend={trend}
-      />
+      <h1 className="text-4xl font-bold mb-4">Energie Dashboard</h1>
     </main>
   );
 }

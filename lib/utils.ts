@@ -59,7 +59,7 @@ export function groupPowerData(
     const row: Record<string, number | string> = {
       time: new Date(ts * 1000).toISOString(),
     };
-    groups.forEach((g) => (row[g] = 0));
+    groups.forEach((group) => (row[group] = 0));
 
     data.production_types
       .filter((type) => !EXCLUDED_PRODUCTION_TYPES.has(type.name))

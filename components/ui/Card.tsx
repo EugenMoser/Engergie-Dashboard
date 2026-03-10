@@ -8,7 +8,7 @@ export default function Card({
 }: CardProps): React.JSX.Element {
   return (
     <div
-      className={`flex flex-col items-start p-4 gap-8 rounded-lg shadow-md ${className ?? ""}`}
+      className={`flex flex-col items-start m-4 p-4 gap-8 rounded-lg shadow-md ${className ?? ""}`}
     >
       {children}
     </div>
