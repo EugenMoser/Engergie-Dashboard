@@ -27,4 +27,5 @@ export interface RenShareForecastData {
   deprecated: boolean;
 }
 
-export type DashboardTimeRange = "24h" | "7d" | "30d";
+export const TIME_RANGES = ["24h", "7d", "30d"] as const;
+export type DashboardTimeRange = (typeof TIME_RANGES)[number];

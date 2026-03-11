@@ -1,12 +1,12 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import PowerKpiCard from "@/components/kpi/PowerKpiCard";
-import PriceKpiCard from "@/components/kpi/PriceKpiCard";
-import RenShareKpiCard from "@/components/kpi/RenShareKpiCard";
-import PowerMixChart from "@/components/PowerMixChart";
-import PowerMixChartWrapper from "@/components/PowerMixChartWrapper";
-import { getDateRange } from "@/lib/utils";
-import { DashboardTimeRange } from "@/types/energy";
+import PowerKpiCard from '@/components/kpi/PowerKpiCard';
+import PriceKpiCard from '@/components/kpi/PriceKpiCard';
+import RenShareKpiCard from '@/components/kpi/RenShareKpiCard';
+import PowerMixChartWrapper from '@/components/PowerMixChartWrapper';
+import TimeRangeSelector from '@/components/TimeRangeSelector';
+import { getDateRange } from '@/lib/utils';
+import { DashboardTimeRange } from '@/types/energy';
 
 interface DashboardPageProps {
   searchParams?: Promise<{ range?: DashboardTimeRange }>;
@@ -39,6 +39,9 @@ export default async function DashboardPage({
           <RenShareKpiCard />
         </Suspense>
       </div>
+      <Suspense fallback={<div>...</div>}>
+        <TimeRangeSelector />
+      </Suspense>
       <div className="m-8">
         <Suspense fallback={<div className="m-4">Lade Daten...</div>}>
           <PowerMixChartWrapper
